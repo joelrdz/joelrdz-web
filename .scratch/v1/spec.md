@@ -6,7 +6,7 @@ People who might hire the site owner as an engineer (employers, companies lookin
 
 ## Solution
 
-A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare Pages. The home page leads with what the owner solves and backs it with proof: two projects and a launch post. The CV is one click away, as a page and as a PDF. The blog, written in Spanish, works as proof of depth for the same audience. The UI is in English. Visitors can choose a light, dark or system theme. The repository is public, so it doubles as proof of how the owner plans and builds. Business (non-technical) clients are served by a separate consultancy brand and are not this site's audience.
+A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare Workers as static assets. The home page leads with what the owner solves and backs it with proof: two projects and a launch post. The CV is one click away, as a page and as a PDF. The blog, written in Spanish, works as proof of depth for the same audience. The UI is in English. Visitors can choose a light, dark or system theme. The repository is public, so it doubles as proof of how the owner plans and builds. Business (non-technical) clients are served by a separate consultancy brand and are not this site's audience.
 
 ## User Stories
 
@@ -55,8 +55,8 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 43. As a visitor who follows a broken link, I want a 404 page that leads back into the site, so that I'm not stranded.
 44. As someone sharing a link, I want a preview image and description to appear, so that the shared link looks intentional.
 45. As a visitor, I want a single canonical address (joelrdz.com, with www redirecting to it), so that I always land on the same site.
-46. As the site owner, I want the pages.dev address never indexed, so that search results show only joelrdz.com and never a half-built preview or a duplicate.
-47. As the site owner, I want every push to main deployed to the preview address from day one, so that the site is up early and grows in place.
+46. As the site owner, I want the workers.dev addresses (production and branch previews) never indexed, so that search results show only joelrdz.com and never a half-built preview or a duplicate.
+47. As the site owner, I want every push to main deployed to the workers.dev address from day one, so that the site is up early and grows in place.
 48. As the site owner, after launch, I want visible changes reviewed on a branch preview before merging, so that the live site never breaks.
 49. As the site owner, I want cookieless traffic analytics, so that I know whether the CV gets visited after I apply somewhere, without a consent banner.
 50. As the site owner, I want the home page's claims (headline, years of experience, stack) to match the CV, so that the two never contradict each other.
@@ -153,7 +153,7 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 
 ### Quality bar (definition of done)
 
-- Lighthouse ≥ 95 on mobile. Performance, Accessibility and Best Practices are measured on the pages.dev preview. SEO is measured on joelrdz.com after the nameserver change, because the pages.dev noindex fails that audit by design.
+- Lighthouse ≥ 95 on mobile. Performance, Accessibility and Best Practices are measured on the workers.dev address. SEO is measured on joelrdz.com after the nameserver change, because the workers.dev noindex fails that audit by design.
 - WCAG AA contrast in both palettes.
 - Full keyboard navigation with visible focus.
 
@@ -164,31 +164,34 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 - A README covering what the site is, its stack and how to run it. It also states the content license.
 - License: MIT for the code; posts, CV and images all rights reserved.
 - Biome for lint and format, with its experimental full support for Astro files enabled (`html.experimentalFullSupportEnabled`). Fallback: if it mishandles templates, Astro files move to Prettier with `prettier-plugin-astro`, and Biome keeps TS/JS.
-- The build script runs Astro's type check before building, so a type error fails the Pages build and nothing deploys.
+- The build script runs Astro's type check before building, so a type error fails the Workers build and nothing deploys.
 - A GitHub Actions workflow runs `biome ci` on every push and pull request.
+- The Wrangler configuration (`wrangler.jsonc`) is versioned in the repo, so the Worker's configuration lives with the code; only the Workers Builds settings (build command, branches, build variables) stay in the dashboard. It is committed before the repo is connected to Workers Builds.
 - No secrets in the repo.
 
 ### Hosting and deploy
 
-- Cloudflare Pages is connected to the GitHub repo early. The project is named `joelrdz` if that name is available (`joelrdz.pages.dev`).
-- `main` is the production branch; every push deploys to pages.dev from the start.
+- Cloudflare Workers with static assets, built and deployed by Workers Builds, which is connected to the GitHub repo early. No adapter and no Worker script: the Wrangler configuration points the assets directory at the build output.
+- The Worker is named `joelrdz` (`joelrdz.<account-subdomain>.workers.dev`).
+- `main` is the production branch; every push deploys to workers.dev from the start.
 - The site URL is set to `https://joelrdz.com` from the first deploy, for canonical URLs, the sitemap and RSS.
-- A Pages headers rule sets `X-Robots-Tag: noindex` on the pages.dev hostname, permanently.
+- A `_headers` rule sets `X-Robots-Tag: noindex` on every workers.dev hostname (the production address and branch previews), permanently.
+- Unmatched URLs serve the custom 404 page with a 404 status: the Wrangler configuration sets `not_found_handling` to `404-page`. Workers doesn't do this by default.
 - Before launch, commits go straight to `main`. After launch, visible changes go through a branch and its preview URL, and are merged when they look right.
 
 ### Domain and launch
 
-- At launch, and only once, the nameservers move from the current host (Hostinger) to Cloudflare. The apex joelrdz.com is canonical, and www redirects to it.
+- At launch, and only once, the nameservers move from the current host (Hostinger) to Cloudflare; a Worker can only serve a domain that is a Cloudflare zone. The apex joelrdz.com is attached to the Worker as a custom domain and is canonical. www redirects to it through a Cloudflare redirect rule, because the `_redirects` file doesn't support domain-level redirects.
 - Email: before enabling any provider, compare the options and their trade-offs: Cloudflare Email Routing (receive-only), Hostinger mail, iCloud+ with a custom domain, and Zoho. The existing MX and SPF records are replaced according to the choice. A test message is sent and received before the site is announced.
-- The domain registration moves to Cloudflare Registrar before it expires on 2027-10-15.
+- The domain registration moves to Cloudflare Registrar before it expires.
 
 ## Testing Decisions
 
 - A good check tests what a visitor or the build sees (rendered pages, response headers, behavior in a real browser), not implementation details.
-- **One automated seam: the build.** The Pages build runs the type check and validates every content collection entry against its schema, and GitHub Actions runs `biome ci`. A malformed post or project, or a type error, fails the build and never deploys.
+- **One automated seam: the build.** The Workers build runs the type check and validates every content collection entry against its schema, and GitHub Actions runs `biome ci`. A malformed post or project, or a type error, fails the build and never deploys.
 - **No test framework in v1** (no Vitest, no Playwright). The only client-side logic is the theme control, and the manual checklist covers it. Revisit if more client-side JS appears.
-- **Manual acceptance checklist.** Run on the pages.dev preview; the SEO and domain items run on joelrdz.com after launch.
-  - Lighthouse on mobile ≥ 95: Performance, Accessibility and Best Practices on the preview; SEO on joelrdz.com.
+- **Manual acceptance checklist.** Run on the workers.dev address; the SEO and domain items run on joelrdz.com after launch.
+  - Lighthouse on mobile ≥ 95: Performance, Accessibility and Best Practices on workers.dev; SEO on joelrdz.com.
   - AA contrast in both palettes, the project diagram included.
   - Keyboard: every interactive element is reachable with Tab and shows visible focus.
   - Theme control: all three options are reachable and switchable with the arrow keys, and a screen reader announces the group, the option and its selected state without custom ARIA.
@@ -196,7 +199,8 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
   - No flash: with Dark chosen, a reload renders dark from the first paint (this is what proves the inline head script).
   - Storage unavailable (private mode or blocked): the page renders, nothing throws, and the theme follows the system.
   - The `/cv` print preview is light regardless of the theme, and the PDF matches the page.
-  - pages.dev responses carry `X-Robots-Tag: noindex`.
+  - workers.dev responses carry `X-Robots-Tag: noindex`.
+  - A URL that doesn't exist returns the custom 404 page with a 404 status.
   - The RSS feed and the sitemap validate, and their URLs and the canonical URLs point to joelrdz.com.
   - Post content, and Spanish titles and descriptions in listings, carry `lang="es"`.
   - After launch: www redirects to the apex, and the test email arrives.
@@ -219,13 +223,13 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 ## Further Notes
 
 - **Implementation mode: learning first.** The first time each piece is built (content collections, layouts, routing, config, deploy, DNS, the git workflow), the owner types it while an agent guides step by step. Only what the owner already understands is delegated. Agents working from this spec should guide, not implement autonomously.
-- Every infrastructure step (first push, Pages connection, headers, branch previews and merge, DNS and nameservers, the www redirect, email) is done guided and documented outside this repo at the time it happens.
+- Every infrastructure step (first push, the Wrangler configuration and the Workers Builds connection, headers, branch previews and merge, DNS and nameservers, the www redirect, email) is done guided and documented outside this repo at the time it happens.
 - Scope is frozen: v1 ships when this spec's checklist is met. New ideas go to a v1.1 list instead of into v1. If time runs short, the launch post is the first thing to move to v1.1.
 - The brand's visual criteria are defined in a separate session before prototyping. The prototype waits for those criteria, not for photos.
 - Order of work:
   1. This spec.
   2. The GitHub repo and the first push.
-  3. Cloudflare Pages, with the site URL and the noindex headers.
+  3. Cloudflare Workers: the Wrangler configuration first, then the Workers Builds connection, with the site URL and the noindex headers.
   4. Tooling: Biome, the type check in the build, Actions, README and LICENSE.
   5. The brand's visual criteria.
   6. The UI prototype.
