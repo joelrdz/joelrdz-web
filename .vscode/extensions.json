@@ -1,8 +1,8 @@
 {
-  "recommendations": [
-    "astro-build.astro-vscode",
-    "biomejs.biome",
-    "editorconfig.editorconfig"
-  ],
-  "unwantedRecommendations": []
+	"recommendations": [
+		"astro-build.astro-vscode",
+		"biomejs.biome",
+		"editorconfig.editorconfig"
+	],
+	"unwantedRecommendations": []
 }

@@ -1,25 +1,25 @@
 {
-  "name": "joelrdz-web",
-  "type": "module",
-  "version": "0.0.1",
-  "packageManager": "pnpm@12.8.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "astro": "^7.3.5"
-  },
-  "allowScripts": {
-    "esbuild": true
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.5.15",
-    "wrangler": "^4.143.1"
-  }
+	"name": "joelrdz-web",
+	"type": "module",
+	"version": "0.0.1",
+	"packageManager": "pnpm@12.8.1",
+	"engines": {
+		"node": ">=22.12.0"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"astro": "^7.3.5"
+	},
+	"allowScripts": {
+		"esbuild": true
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.15",
+		"wrangler": "^4.143.1"
+	}
 }
