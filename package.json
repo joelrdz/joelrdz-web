@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro build",
+		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
@@ -19,7 +19,9 @@
 		"esbuild": true
 	},
 	"devDependencies": {
+		"@astrojs/check": "^0.9.10",
 		"@biomejs/biome": "2.5.15",
+		"typescript": "^6.0.3",
 		"wrangler": "^4.143.1"
 	}
 }
