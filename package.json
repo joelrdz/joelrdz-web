@@ -19,6 +19,7 @@
     "esbuild": true
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.15",
     "wrangler": "^4.143.1"
   }
 }
