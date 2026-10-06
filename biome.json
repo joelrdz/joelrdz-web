@@ -6,7 +6,13 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": ["**", "!!**/dist", "!.agents", "!skills-lock.json"]
+		"includes": [
+			"**",
+			"!!**/dist",
+			"!.agents",
+			"!skills-lock.json",
+			"!public/**/*.svg"
+		]
 	},
 	"formatter": {
 		"enabled": true,
@@ -32,18 +38,10 @@
 		}
 	},
 	"html": {
-		"experimentalFullSupportEnabled": true
-	},
-	"overrides": [
-		{
-			"includes": ["public/**/*.svg"],
-			"linter": {
-				"rules": {
-					"a11y": {
-						"noSvgWithoutTitle": "off"
-					}
-				}
-			}
+		"experimentalFullSupportEnabled": true,
+		"formatter": {
+			"enabled": true,
+			"selfCloseVoidElements": "always"
 		}
-	]
+	}
 }
