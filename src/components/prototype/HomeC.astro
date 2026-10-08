@@ -1,0 +1,191 @@
+---
+// PROTOTYPE variant C, "Fixed name + index" (rsms.me): name, navigation and
+// contact pinned on the left; the content reads as an index of rows split by
+// 1 px lines, the same pattern the blog index will use.
+import { claim, formatDate, latestPost, person, projects } from "./data";
+---
+
+<div class="c">
+	<header>
+		<a class="name" href="/">{person.name}</a>
+		<p class="role">{person.role}<br />{person.location}</p>
+		<nav aria-label="Main">
+			<a href="/projects">Projects</a>
+			<a href="/cv">CV</a>
+			<a href="/blog">Blog</a>
+		</nav>
+		<ul class="contact">
+			<li><a href={`mailto:${person.email}`}>{person.email}</a></li>
+			<li><a href={person.linkedin}>LinkedIn</a></li>
+			<li><a href={person.github}>GitHub</a></li>
+		</ul>
+	</header>
+
+	<main>
+		<h1>{claim.before}<em class="accent">{claim.accent}</em>{claim.after}</h1>
+		<p class="support">{claim.support}</p>
+
+		<section aria-labelledby="c-projects">
+			<h2 id="c-projects">Projects</h2>
+			<ul class="index">
+				{projects.map((project) => (
+					<li>
+						<div>
+							<a href={project.href}>{project.title}</a>
+							<p>{project.summary}</p>
+						</div>
+						<span class="aside">{project.status}</span>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section aria-labelledby="c-writing">
+			<h2 id="c-writing">Writing</h2>
+			<ul class="index">
+				<li>
+					<a href={latestPost.href} lang={latestPost.lang}>
+						{latestPost.title}
+					</a>
+					<time class="aside" datetime={latestPost.date}>
+						{formatDate(latestPost.date)}
+					</time>
+				</li>
+			</ul>
+		</section>
+
+		<p class="cta">
+			Have a project or a role in mind?
+			<a href={`mailto:${person.email}`}>Write to me</a>.
+		</p>
+	</main>
+</div>
+
+<style>
+.c {
+	display: grid;
+	grid-template-columns: 13rem minmax(0, 40rem);
+	gap: 5rem;
+	max-width: 64rem;
+	margin: 0 auto;
+	padding: 4rem 1.5rem 3rem;
+}
+
+header {
+	position: sticky;
+	top: 4rem;
+	align-self: start;
+	display: grid;
+	gap: 2rem;
+}
+
+.name {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.role {
+	margin: -1.5rem 0 0;
+	color: var(--muted);
+}
+
+nav,
+.contact {
+	display: grid;
+	gap: 0.25rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+nav a,
+.contact a {
+	color: var(--muted);
+	text-decoration: none;
+}
+
+nav a:hover,
+.contact a:hover {
+	color: var(--text);
+}
+
+.contact {
+	font-size: 0.875rem;
+}
+
+h1 {
+	margin: 0 0 1rem;
+	font-size: 1.5rem;
+	font-weight: 500;
+	line-height: 1.35;
+	letter-spacing: -0.015em;
+}
+
+.support {
+	margin: 0;
+	color: var(--muted);
+}
+
+section {
+	margin-top: 4rem;
+}
+
+h2 {
+	margin: 0 0 0.75rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--muted);
+}
+
+.index {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-bottom: 1px solid var(--line);
+}
+
+.index li {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1.5rem;
+	padding: 0.875rem 0;
+	border-top: 1px solid var(--line);
+}
+
+.index a {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.index a:hover {
+	text-decoration: underline;
+}
+
+.index p {
+	margin: 0.25rem 0 0;
+	color: var(--muted);
+}
+
+.aside {
+	flex-shrink: 0;
+	font-size: 0.875rem;
+	color: var(--muted);
+	font-variant-numeric: tabular-nums;
+}
+
+.cta {
+	margin: 4rem 0 0;
+}
+
+@media (max-width: 48rem) {
+	.c {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 4rem;
+	}
+
+	header {
+		position: static;
+	}
+}
+</style>

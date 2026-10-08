@@ -1,16 +1,34 @@
 ---
+// PROTOTYPE (throwaway, lives only on the local `prototype/ui` branch):
+// three structurally different home pages on `/`, switchable with `?variant=`,
+// plus `?font=`, `?theme=` and `?accent=` from the floating bar. The winner is
+// rebuilt properly in step 6; this file goes back to a real home page then.
+import HomeA from "../components/prototype/HomeA.astro";
+import HomeB from "../components/prototype/HomeB.astro";
+import HomeC from "../components/prototype/HomeC.astro";
+import Shell from "../components/prototype/Shell.astro";
+
+const variants = [
+	{ key: "A", name: "Narrow column" },
+	{ key: "B", name: "Short columns" },
+	{ key: "C", name: "Fixed name + index" },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Shell title="Joel Rodríguez — prototype" variants={variants}>
+	<div class="variant enter" data-key="A"><HomeA /></div>
+	<div class="variant enter" data-key="B"><HomeB /></div>
+	<div class="variant enter" data-key="C"><HomeC /></div>
+</Shell>
+
+<style is:global>
+.variant {
+	display: none;
+}
+
+:root[data-variant="A"] .variant[data-key="A"],
+:root[data-variant="B"] .variant[data-key="B"],
+:root[data-variant="C"] .variant[data-key="C"] {
+	display: block;
+}
+</style>

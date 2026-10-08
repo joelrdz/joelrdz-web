@@ -1,0 +1,181 @@
+---
+// PROTOTYPE: floating bar to flip between variants, fonts, themes and accents.
+// The bar only renders in `astro dev`, so a stray merge can't ship it; the
+// script is outside the DEV check because Biome reflows scripts inside
+// expressions, and without the bar it does nothing.
+interface Props {
+	variants: { key: string; name: string }[];
+}
+
+const { variants } = Astro.props;
+---
+
+{import.meta.env.DEV && (
+	<div class="prototype-bar" data-variants={JSON.stringify(variants)}>
+		{variants.length > 0 && (
+			<div class="group">
+				<button type="button" data-step="-1" aria-label="Previous variant">
+					←
+				</button>
+				<span class="label" data-label />
+				<button type="button" data-step="1" aria-label="Next variant">
+					→
+				</button>
+			</div>
+		)}
+		<div class="group">
+			<button type="button" data-set="font" data-value="atkinson">
+				Atkinson
+			</button>
+			<button type="button" data-set="font" data-value="plex">
+				Plex
+			</button>
+		</div>
+		<div class="group">
+			<button type="button" data-set="theme" data-value="light">
+				Light
+			</button>
+			<button type="button" data-set="theme" data-value="dark">
+				Dark
+			</button>
+		</div>
+		<div class="group">
+			<button type="button" data-set="accent" data-value="italic">
+				Italic
+			</button>
+			<button type="button" data-set="accent" data-value="color">
+				Color
+			</button>
+		</div>
+	</div>
+)}
+
+<script is:inline>
+(() => {
+	const bar = document.querySelector(".prototype-bar");
+	if (!bar) return;
+	const root = document.documentElement;
+	const variants = JSON.parse(bar.dataset.variants);
+	const settings = ["font", "theme", "accent"];
+
+	const withParams = (href) => {
+		const url = new URL(href, location.href);
+		if (root.dataset.variant) {
+			url.searchParams.set("variant", root.dataset.variant);
+		}
+		for (const key of settings) {
+			url.searchParams.set(key, root.dataset[key]);
+		}
+		return url.pathname + url.search + url.hash;
+	};
+
+	const render = () => {
+		const current = variants.find(
+			(variant) => variant.key === root.dataset.variant,
+		);
+		const label = bar.querySelector("[data-label]");
+		if (label && current) {
+			label.textContent = `${current.key} · ${current.name}`;
+		}
+		for (const button of bar.querySelectorAll("[data-set]")) {
+			const pressed = root.dataset[button.dataset.set] === button.dataset.value;
+			button.setAttribute("aria-pressed", String(pressed));
+		}
+		history.replaceState(null, "", withParams(location.href));
+		for (const link of document.querySelectorAll('a[href^="/"]')) {
+			link.setAttribute("href", withParams(link.getAttribute("href")));
+		}
+	};
+
+	const step = (offset) => {
+		const index = variants.findIndex(
+			(variant) => variant.key === root.dataset.variant,
+		);
+		const next = (index + offset + variants.length) % variants.length;
+		root.dataset.variant = variants[next].key;
+		render();
+	};
+
+	bar.addEventListener("click", (event) => {
+		const button = event.target.closest("button");
+		if (!button) return;
+		if (button.dataset.step) {
+			step(Number(button.dataset.step));
+		} else {
+			root.dataset[button.dataset.set] = button.dataset.value;
+			render();
+		}
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (variants.length === 0) return;
+		if (event.metaKey || event.ctrlKey || event.altKey) return;
+		if (event.target.closest("input, textarea, select, [contenteditable]")) {
+			return;
+		}
+		if (event.key === "ArrowLeft") step(-1);
+		if (event.key === "ArrowRight") step(1);
+	});
+
+	render();
+})();
+</script>
+
+<style>
+.prototype-bar {
+	position: fixed;
+	bottom: 64px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 6px;
+	width: max-content;
+	max-width: calc(100vw - 32px);
+	padding: 6px;
+	border-radius: 14px;
+	background: rgb(17 17 17 / 0.94);
+	color: #fff;
+	font:
+		13px / 1 system-ui,
+		sans-serif;
+	box-shadow:
+		0 0 0 1px rgb(255 255 255 / 0.12),
+		0 8px 24px rgb(0 0 0 / 0.3);
+	z-index: 1000;
+}
+
+.group {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	padding: 2px;
+	border-radius: 10px;
+	background: rgb(255 255 255 / 0.06);
+}
+
+button {
+	padding: 7px 10px;
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+}
+
+button:hover,
+button[aria-pressed="true"] {
+	background: rgb(255 255 255 / 0.18);
+}
+
+.label {
+	min-width: 11rem;
+	text-align: center;
+}
+
+:global(body) {
+	padding-bottom: 6rem;
+}
+</style>

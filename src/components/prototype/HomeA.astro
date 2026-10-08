@@ -1,0 +1,162 @@
+---
+// PROTOTYPE variant A, "Narrow column" (emilkowal.ski): everything stacked in
+// one narrow column, hierarchy from space and weight alone, no lines.
+import { claim, formatDate, latestPost, person, projects } from "./data";
+---
+
+<div class="a">
+	<header>
+		<a class="name" href="/">{person.name}</a>
+		<nav aria-label="Main">
+			<a href="/projects">Projects</a>
+			<a href="/cv">CV</a>
+			<a href="/blog">Blog</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="intro">
+			<h1>
+				{claim.before}<em class="accent">{claim.accent}</em>{claim.after}
+			</h1>
+			<p>{claim.support}</p>
+		</section>
+
+		<section aria-labelledby="a-projects">
+			<h2 id="a-projects">Projects</h2>
+			<ul>
+				{projects.map((project) => (
+					<li>
+						<a class="title" href={project.href}>
+							{project.title}
+						</a>
+						<p>{project.summary}</p>
+						<p class="meta">
+							{project.status} · {project.stack.join(", ")}
+						</p>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section aria-labelledby="a-writing">
+			<h2 id="a-writing">Writing</h2>
+			<a class="title" href={latestPost.href} lang={latestPost.lang}>
+				{latestPost.title}
+			</a>
+			<p lang={latestPost.lang}>{latestPost.description}</p>
+			<p class="meta">
+				<time datetime={latestPost.date}>{formatDate(latestPost.date)}</time>
+			</p>
+		</section>
+
+		<section aria-labelledby="a-contact">
+			<h2 id="a-contact">Contact</h2>
+			<p>
+				Have a project or a role in mind? Write to me at
+				<a href={`mailto:${person.email}`}>{person.email}</a>.
+			</p>
+		</section>
+	</main>
+
+	<footer>
+		<a href={`mailto:${person.email}`}>{person.email}</a>
+		<a href={person.linkedin}>LinkedIn</a>
+		<a href={person.github}>GitHub</a>
+	</footer>
+</div>
+
+<style>
+.a {
+	max-width: 36rem;
+	margin: 0 auto;
+	padding: 4rem 1.5rem 3rem;
+}
+
+header {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	margin-bottom: 5rem;
+}
+
+.name {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+nav,
+footer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.25rem;
+}
+
+nav a,
+footer a {
+	color: var(--muted);
+	text-decoration: none;
+}
+
+nav a:hover,
+footer a:hover {
+	color: var(--text);
+}
+
+h1 {
+	margin: 0 0 1rem;
+	font-size: 1.375rem;
+	font-weight: 500;
+	line-height: 1.45;
+	letter-spacing: -0.01em;
+}
+
+p {
+	margin: 0;
+}
+
+.intro p,
+.meta {
+	color: var(--muted);
+}
+
+section + section {
+	margin-top: 4rem;
+}
+
+h2 {
+	margin: 0 0 1.25rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--muted);
+}
+
+ul {
+	display: grid;
+	gap: 2rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.title {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.title:hover {
+	text-decoration: underline;
+}
+
+.meta {
+	margin-top: 0.25rem;
+	font-size: 0.875rem;
+}
+
+footer {
+	margin-top: 6rem;
+	font-size: 0.875rem;
+}
+</style>

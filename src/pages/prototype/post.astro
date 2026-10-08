@@ -1,0 +1,168 @@
+---
+// PROTOTYPE (throwaway): a dummy post with code, to judge the typeface
+// (Atkinson vs Plex) and both palettes on long-form Spanish prose.
+
+import { formatDate, person } from "../../components/prototype/data";
+import { Content, frontmatter } from "../../components/prototype/post-dummy.md";
+import Shell from "../../components/prototype/Shell.astro";
+---
+
+<Shell title={`${frontmatter.title} — prototype`}>
+	<div class="post enter">
+		<header>
+			<a class="name" href="/">{person.name}</a>
+			<nav aria-label="Main">
+				<a href="/projects">Projects</a>
+				<a href="/cv">CV</a>
+				<a href="/blog">Blog</a>
+			</nav>
+		</header>
+
+		<main>
+			<article lang={frontmatter.lang}>
+				<h1>{frontmatter.title}</h1>
+				<p class="meta">
+					<time datetime={frontmatter.date}
+						>{formatDate(frontmatter.date)}</time
+					>
+				</p>
+				<div class="prose"><Content /></div>
+			</article>
+		</main>
+
+		<footer>
+			<a href={`mailto:${person.email}`}>{person.email}</a>
+			<a href={person.linkedin}>LinkedIn</a>
+			<a href={person.github}>GitHub</a>
+		</footer>
+	</div>
+</Shell>
+
+<style>
+.post {
+	max-width: 40rem;
+	margin: 0 auto;
+	padding: 4rem 1.5rem 3rem;
+}
+
+header {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	margin-bottom: 5rem;
+}
+
+.name {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+nav,
+footer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.25rem;
+}
+
+nav a,
+footer a {
+	color: var(--muted);
+	text-decoration: none;
+}
+
+nav a:hover,
+footer a:hover {
+	color: var(--text);
+}
+
+h1 {
+	margin: 0;
+	font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
+	font-weight: 600;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+}
+
+.meta {
+	margin: 0.75rem 0 3rem;
+	font-size: 0.875rem;
+	color: var(--muted);
+}
+
+.prose {
+	font-size: 1.0625rem;
+	line-height: 1.7;
+}
+
+.prose :global(h2) {
+	margin: 3rem 0 1rem;
+	font-size: 1.25rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.prose :global(p),
+.prose :global(ul),
+.prose :global(pre),
+.prose :global(blockquote) {
+	margin: 0 0 1.25rem;
+}
+
+.prose :global(ul) {
+	padding-left: 1.25rem;
+}
+
+.prose :global(li + li) {
+	margin-top: 0.5rem;
+}
+
+.prose :global(blockquote) {
+	padding-left: 1rem;
+	border-left: 2px solid var(--line);
+	color: var(--muted);
+}
+
+.prose :global(hr) {
+	margin: 3rem 0;
+	border: 0;
+	border-top: 1px solid var(--line);
+}
+
+.prose :global(pre) {
+	padding: 1rem 1.25rem;
+	border-radius: 6px;
+	font-size: 0.875rem;
+	line-height: 1.6;
+	overflow-x: auto;
+}
+
+.prose :global(.astro-code) {
+	background-color: var(--code-bg);
+}
+
+.prose :global(.astro-code),
+.prose :global(.astro-code span) {
+	color: var(--shiki-light);
+}
+
+:global(:root[data-theme="dark"]) .prose :global(.astro-code),
+:global(:root[data-theme="dark"]) .prose :global(.astro-code span) {
+	color: var(--shiki-dark);
+}
+
+.prose :global(:not(pre) > code) {
+	padding: 0.1em 0.3em;
+	border-radius: 4px;
+	background: var(--code-bg);
+	font-size: 0.9em;
+}
+
+footer {
+	margin-top: 6rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid var(--line);
+	font-size: 0.875rem;
+}
+</style>

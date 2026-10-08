@@ -1,0 +1,143 @@
+---
+// PROTOTYPE: document shell shared by the prototype pages. It owns the color
+// tokens and the font, theme and accent switches; each variant owns its layout.
+
+import { Font } from "astro:assets";
+import Switcher from "./Switcher.astro";
+
+interface Props {
+	title: string;
+	variants?: { key: string; name: string }[];
+}
+
+const { title, variants = [] } = Astro.props;
+const keys = variants.map((variant) => variant.key);
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<title>{title}</title>
+		<Font cssVariable="--font-atkinson-sans" />
+		<Font cssVariable="--font-atkinson-mono" />
+		<Font cssVariable="--font-plex-sans" />
+		<Font cssVariable="--font-plex-mono" />
+		<script is:inline define:vars={{ keys }}>
+		const params = new URLSearchParams(location.search);
+		const root = document.documentElement;
+		const variant = params.get("variant");
+		if (keys.length > 0) {
+			root.dataset.variant = keys.includes(variant) ? variant : keys[0];
+		} else if (variant) {
+			root.dataset.variant = variant;
+		}
+		root.dataset.font = params.get("font") ?? "atkinson";
+		root.dataset.accent = params.get("accent") ?? "italic";
+		root.dataset.theme =
+			params.get("theme") ??
+			(matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+		</script>
+	</head>
+	<body>
+		<slot />
+		<Switcher variants={variants} />
+	</body>
+</html>
+
+<style is:global>
+:root {
+	--bg: #fdfdfc;
+	--text: #1c1b19;
+	--muted: #6b6963;
+	--line: #e6e4df;
+	--accent: #b4441c;
+	--code-bg: #f1f0ec;
+	--sans: var(--font-atkinson-sans, system-ui), system-ui, sans-serif;
+	--mono: var(--font-atkinson-mono, ui-monospace), ui-monospace, monospace;
+	color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+	--bg: #1a1a1a;
+	--text: #ecebe7;
+	--muted: #9e9c96;
+	--line: #2f2e2b;
+	--accent: #e8875f;
+	--code-bg: #262523;
+	color-scheme: dark;
+}
+
+:root[data-font="plex"] {
+	--sans: var(--font-plex-sans, system-ui), system-ui, sans-serif;
+	--mono: var(--font-plex-mono, ui-monospace), ui-monospace, monospace;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--sans);
+	font-size: 1rem;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+a {
+	color: inherit;
+	text-decoration-color: var(--muted);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+a:hover {
+	text-decoration-color: currentColor;
+}
+
+:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+code,
+pre {
+	font-family: var(--mono);
+}
+
+.accent {
+	font-style: italic;
+}
+
+:root[data-accent="color"] .accent {
+	font-style: normal;
+	color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	body {
+		transition:
+			background-color 0.2s ease,
+			color 0.2s ease;
+	}
+
+	.enter {
+		animation: enter 0.6s ease-out both;
+	}
+
+	@keyframes enter {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+	}
+}
+</style>
