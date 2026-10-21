@@ -31,13 +31,17 @@ The prototype settled the visual decisions. Its code stays on the `prototype/ui`
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-human
+**Status:** done
 
-- [ ] The workers.dev home shows the headline, the supporting line and a mailto call to action instead of the scaffold.
-- [ ] Every page has the navigation and a footer with LinkedIn, GitHub and the placeholder email address.
-- [ ] With macOS set to dark, the site renders in the dark palette; set to light, in the light one.
-- [ ] Text renders in Atkinson Hyperlegible Next, served from the site itself rather than a third-party font host.
-- [ ] Every link shows a visible focus indicator when reached with Tab.
-- [ ] Every page has its own title and meta description, not the scaffold's.
-- [ ] A URL that doesn't exist returns the custom 404 page with a 404 status, and the page links back home.
-- [ ] The headline, years of experience and stack match the CV.
+- [x] The workers.dev home shows the headline, the supporting line and a mailto call to action instead of the scaffold.
+- [x] Every page has ~~the navigation and~~ a footer with LinkedIn, GitHub and the placeholder email address.
+- [x] With macOS set to dark, the site renders in the dark palette; set to light, in the light one.
+- [x] Text renders in Atkinson Hyperlegible Next, served from the site itself rather than a third-party font host.
+- [x] Every link shows a visible focus indicator when reached with Tab.
+- [x] Every page has its own title and meta description, not the scaffold's.
+- [x] A URL that doesn't exist returns the custom 404 page with a 404 status, and the page links back home.
+- [x] The headline, years of experience and stack match the CV.
+
+## Comments
+
+- The navigation moves to 02. With only the home page there is nothing to link to, and an empty `<nav>` landmark would be announced with nothing in it; the name in the header links home. 02 adds `<nav aria-label="Main">` with the CV link.
