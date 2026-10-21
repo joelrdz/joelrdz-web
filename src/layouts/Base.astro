@@ -1,0 +1,126 @@
+---
+import { Font } from "astro:assets";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<Font cssVariable="--font-atkinson-sans" />
+		<Font cssVariable="--font-atkinson-mono" />
+	</head>
+	<body>
+		<Header />
+		<main><slot /></main>
+		<Footer />
+	</body>
+</html>
+
+<style is:global>
+:root {
+	--bg: #fdfdfc;
+	--text: #1c1b19;
+	--muted: #6b6963;
+	--line: #e6e4df;
+	--code-bg: #f1f0ec;
+	--sans: var(--font-atkinson-sans);
+	--mono: var(--font-atkinson-mono);
+	color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #1a1a1a;
+		--text: #ecebe7;
+		--muted: #9e9c96;
+		--line: #2f2e2b;
+		--code-bg: #262523;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100svh;
+	max-width: 64rem;
+	margin: 0 auto;
+	padding-inline: 1.5rem;
+
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--sans);
+	font-size: 1rem;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+main {
+	flex: 1;
+}
+
+h1 {
+	max-width: 22ch;
+	margin: 0 0 1.5rem;
+	font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+	font-weight: 500;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+a {
+	color: inherit;
+	text-decoration-color: var(--muted);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+a:hover {
+	text-decoration-color: currentColor;
+}
+
+:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+code,
+pre {
+	font-family: var(--mono);
+}
+
+.support {
+	max-width: 38rem;
+	margin: 0;
+	color: var(--muted);
+}
+
+.cta {
+	margin-top: 2rem;
+}
+
+.cta a {
+	font-weight: 600;
+}
+</style>

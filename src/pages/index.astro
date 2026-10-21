@@ -1,16 +1,22 @@
 ---
+import { EMAIL } from "@/consts";
+import Base from "@/layouts/Base.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base
+	title="Joel Rodríguez — Full-stack developer"
+	description="I model how a business actually works, then build the software on top. 10 years of experience, today with Next.js, TypeScript and Supabase."
+>
+	<h1>
+		I model how a business <em>actually</em> works, then build the software on
+		top.
+	</h1>
+	<p class="support">
+		I've built web applications for 10 years: the first seven leading frontend,
+		the last three across the full stack. Today I work with Next.js, TypeScript
+		and Supabase, alongside AI coding agents.
+	</p>
+	<p class="cta">
+		Have a role or a project in mind? <a href={`mailto:${EMAIL}`}>Email me</a>.
+	</p>
+</Base>
