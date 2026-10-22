@@ -1,0 +1,154 @@
+---
+// Icons from Lucide (lucide.dev), ISC license.
+---
+
+<fieldset class="theme">
+	<legend class="visually-hidden">Theme</legend>
+	<label>
+		<input class="visually-hidden" type="radio" name="theme" value="light" />
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<circle cx="12" cy="12" r="4" />
+			<path d="M12 2v2" />
+			<path d="M12 20v2" />
+			<path d="m4.93 4.93 1.41 1.41" />
+			<path d="m17.66 17.66 1.41 1.41" />
+			<path d="M2 12h2" />
+			<path d="M20 12h2" />
+			<path d="m6.34 17.66-1.41 1.41" />
+			<path d="m19.07 4.93-1.41 1.41" />
+		</svg>
+		<span class="visually-hidden">Light</span>
+	</label>
+	<label>
+		<input class="visually-hidden" type="radio" name="theme" value="dark" />
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+		</svg>
+		<span class="visually-hidden">Dark</span>
+	</label>
+	<label>
+		<input
+			class="visually-hidden"
+			type="radio"
+			name="theme"
+			value="system"
+			checked
+		/>
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<rect width="20" height="14" x="2" y="3" rx="2" />
+			<line x1="8" x2="16" y1="21" y2="21" />
+			<line x1="12" x2="12" y1="17" y2="21" />
+		</svg>
+		<span class="visually-hidden">System</span>
+	</label>
+</fieldset>
+
+<script is:inline>
+{
+	const root = document.documentElement;
+	const group = document.querySelector(".theme");
+	const markChoice = () => {
+		const choice = root.dataset.theme ?? "system";
+		group.querySelector(`[value="${choice}"]`).checked = true;
+	};
+
+	markChoice();
+	window.addEventListener("pageshow", markChoice);
+
+	group.addEventListener("change", (event) => {
+		const choice = event.target.value;
+		const isSystem = choice === "system";
+
+		if (isSystem) {
+			root.removeAttribute("data-theme");
+		} else {
+			root.dataset.theme = choice;
+		}
+
+		try {
+			if (isSystem) {
+				localStorage.removeItem("theme");
+			} else {
+				localStorage.setItem("theme", choice);
+			}
+		} catch {
+			// Storage is blocked, so the choice applies to this page only.
+		}
+	});
+}
+</script>
+
+<style>
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.theme {
+	display: flex;
+	gap: 0.125rem;
+	margin: 0;
+	padding: 0.125rem;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+}
+
+label {
+	display: flex;
+	padding: 0.375rem;
+	border-radius: 999px;
+	color: var(--muted);
+	cursor: pointer;
+}
+
+label:hover {
+	color: var(--text);
+}
+
+label:has(:checked) {
+	background: var(--text);
+	color: var(--bg);
+}
+
+label:has(:focus-visible) {
+	outline: 2px solid var(--text);
+	outline-offset: 2px;
+}
+</style>

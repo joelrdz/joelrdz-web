@@ -16,6 +16,30 @@ const { title, description } = Astro.props;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script is:inline>
+		{
+			const root = document.documentElement;
+			const apply = () => {
+				try {
+					const theme = localStorage.getItem("theme");
+					if (theme === "light" || theme === "dark") {
+						root.dataset.theme = theme;
+					} else {
+						root.removeAttribute("data-theme");
+					}
+				} catch {
+					// Storage is blocked, so the theme follows the system.
+				}
+			};
+
+			apply();
+			window.addEventListener("pageshow", (event) => {
+				if (event.persisted) {
+					apply();
+				}
+			});
+		}
+		</script>
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -32,24 +56,27 @@ const { title, description } = Astro.props;
 
 <style is:global>
 :root {
-	--bg: #fdfdfc;
-	--text: #1c1b19;
-	--muted: #6b6963;
-	--line: #e6e4df;
-	--code-bg: #f1f0ec;
+	--bg: light-dark(#fdfdfc, #1a1a1a);
+	--text: light-dark(#1c1b19, #ecebe7);
+	--muted: light-dark(#6b6963, #9e9c96);
+	--line: light-dark(#e6e4df, #2f2e2b);
+	--code-bg: light-dark(#f1f0ec, #262523);
 	--sans: var(--font-atkinson-sans);
 	--mono: var(--font-atkinson-mono);
 	--prose-width: 40rem;
 	color-scheme: light;
 }
 
-@media screen and (prefers-color-scheme: dark) {
+@media screen {
 	:root {
-		--bg: #1a1a1a;
-		--text: #ecebe7;
-		--muted: #9e9c96;
-		--line: #2f2e2b;
-		--code-bg: #262523;
+		color-scheme: light dark;
+	}
+
+	:root[data-theme="light"] {
+		color-scheme: light;
+	}
+
+	:root[data-theme="dark"] {
 		color-scheme: dark;
 	}
 }

@@ -1,3 +1,7 @@
+---
+import ThemeControl from "@/components/ThemeControl.astro";
+---
+
 <header>
 	<a class="name" href="/">Joel Rodríguez</a>
 	<span class="role">Full-stack developer</span>
@@ -5,13 +9,14 @@
 		<a href="/projects/">Projects</a>
 		<a href="/cv/">CV</a>
 	</nav>
+	<ThemeControl />
 </header>
 
 <style>
 header {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: baseline;
+	align-items: center;
 	gap: 0.75rem;
 	padding-block: 4rem 6rem;
 }

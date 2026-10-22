@@ -136,12 +136,13 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 ### Theming
 
 - Light and dark palettes, plus a "system" option. The brand criteria define how each palette looks, not whether there are two.
+- **Palettes:** each color token holds both values in `light-dark()`, and the root's `color-scheme` picks one: `light dark` follows the system, and a `data-theme` attribute fixes Light or Dark. Only rules inside `@media screen` can pick dark, so print stays light.
 - **Control:** a native radio group: a fieldset with a visually hidden legend ("Theme") and three radio inputs (Light, Dark, System), styled as a segmented control of three icons, each with visually hidden text.
   - The radios are hidden with the visually-hidden technique, never with `display: none` or `visibility: hidden`, which would remove them from the tab order and the accessibility tree.
   - Focus is drawn on the visible label when its input matches `:focus-visible`.
   - Arrow-key navigation, focus handling and the state announcement come from the browser. No custom ARIA.
-- **Behavior:** the script listens for `change` on the group. Light or Dark applies the theme and persists the choice. System clears the persisted choice, follows `prefers-color-scheme` and listens for its changes to update live, without a reload.
-- **No flash:** a small inline script in the document head applies the persisted theme, or the system one, before the first paint.
+- **Behavior:** the script listens for `change` on the group. Light or Dark applies the theme and persists the choice. System clears the persisted choice and the attribute, so the CSS follows `prefers-color-scheme` and updates live, without a reload or a listener.
+- **No flash:** a small inline script in the document head applies the persisted theme before the first paint. Without one, the CSS already follows the system.
 - **Storage failure:** every storage access is guarded. If storage is unavailable, the control still switches the theme for the current page, the default follows the system, and nothing throws.
 
 ### Extras
