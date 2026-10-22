@@ -1,0 +1,59 @@
+---
+import { EMAIL } from "@/consts";
+import { Content } from "@/content/cv.md";
+import Base from "@/layouts/Base.astro";
+---
+
+<Base
+	title="CV — Joel Rodríguez"
+	description="The CV of Joel Rodríguez, a full-stack developer with 10 years of experience building web applications. Read it here or download it as a PDF."
+>
+	<article class="cv">
+		<h1>Joel Rodríguez</h1>
+		<p class="support">Full-Stack Developer · Saltillo, México</p>
+		<address><a href={`mailto:${EMAIL}`}>{EMAIL}</a></address>
+		<p class="download">
+			<a href="/joel-rodriguez-cv.pdf" download>Download PDF</a>
+		</p>
+		<Content />
+	</article>
+</Base>
+
+<style>
+.cv {
+	max-width: 40rem;
+}
+
+address {
+	margin-top: 1rem;
+	font-style: normal;
+}
+
+.cv :global(h2) {
+	margin: 3rem 0 1rem;
+	font-size: 1.25rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.cv :global(h3) {
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.cv :global(ul) {
+	padding-left: 1.25rem;
+}
+
+.cv :global(hr) {
+	margin: 3rem 0;
+	border: 0;
+	border-top: 1px solid var(--line);
+}
+
+@media print {
+	.download {
+		display: none;
+	}
+}
+</style>

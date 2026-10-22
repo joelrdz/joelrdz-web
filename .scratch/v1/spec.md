@@ -80,13 +80,14 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 ### Routes (URL contract)
 
 - `/`: home.
-- `/projects`: projects index. `/projects/<slug>`: one page per project.
-- `/cv`: the CV page, which links to a downloadable PDF.
-- `/blog`: blog index. `/blog/<slug>`: one page per post.
+- `/projects/`: projects index. `/projects/<slug>/`: one page per project.
+- `/cv/`: the CV page, which links to a downloadable PDF.
+- `/blog/`: blog index. `/blog/<slug>/`: one page per post.
 - An RSS feed for the blog and a sitemap.
 - A 404 page.
 - No About page: the home page does that job.
-- **Permanent rule:** posts live at `/blog/<slug>` with no language prefix, forever. If the site becomes bilingual, `/es/` covers only the UI pages; no post ever changes URL.
+- Page URLs end in a slash. Astro's default build writes each page as a folder with an `index.html`, which Workers serves at the folder's URL and redirects to from the slashless one. Building pages as `.html` files instead would drop the slash, but `Astro.url` would then end in `.html`, and every canonical or Open Graph URL built from it would point at a redirect. Astro's `trailingSlash: "always"` makes the dev server reject an internal link without the slash. Files, such as the CV PDF, keep their own name.
+- **Permanent rule:** posts live at `/blog/<slug>/` with no language prefix, forever. If the site becomes bilingual, `/es/` covers only the UI pages; no post ever changes URL.
 
 ### Language
 
@@ -114,9 +115,9 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 
 ### CV
 
-- The source lives outside the repo and remains the master. It is copied in at publish time, with the public email address in place of the private one.
-- Rendered at `/cv`. A print stylesheet renders it light regardless of the active theme.
-- The PDF is produced manually, by printing `/cv` from the browser, and committed as a static asset. Not automated in the build.
+- The source lives outside the repo and remains the master. Its body, from the summary down, is copied in at publish time. The header (name, role, city and email) is written in the page instead, so the email comes from the same constant as the footer and the private address can't be copied in; a change to the master's header is made in the page by hand.
+- Rendered at `/cv/`. A print stylesheet renders it light regardless of the active theme.
+- The PDF is produced manually, by printing `/cv/` from the browser, and committed as a static asset. Not automated in the build.
 
 ### Blog at launch
 
@@ -198,7 +199,7 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
   - System mode: changing the macOS appearance switches the site live, without a reload.
   - No flash: with Dark chosen, a reload renders dark from the first paint (this is what proves the inline head script).
   - Storage unavailable (private mode or blocked): the page renders, nothing throws, and the theme follows the system.
-  - The `/cv` print preview is light regardless of the theme, and the PDF matches the page.
+  - The `/cv/` print preview is light regardless of the theme, and the PDF matches the page.
   - workers.dev responses carry `X-Robots-Tag: noindex`.
   - A URL that doesn't exist returns the custom 404 page with a 404 status.
   - The RSS feed and the sitemap validate, and their URLs and the canonical URLs point to joelrdz.com.

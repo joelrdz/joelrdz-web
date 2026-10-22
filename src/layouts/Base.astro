@@ -39,16 +39,17 @@ const { title, description } = Astro.props;
 	--code-bg: #f1f0ec;
 	--sans: var(--font-atkinson-sans);
 	--mono: var(--font-atkinson-mono);
-	color-scheme: light dark;
+	color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
 	:root {
 		--bg: #1a1a1a;
 		--text: #ecebe7;
 		--muted: #9e9c96;
 		--line: #2f2e2b;
 		--code-bg: #262523;
+		color-scheme: dark;
 	}
 }
 
