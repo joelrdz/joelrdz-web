@@ -15,6 +15,8 @@ shikiConfig: {
 
 This ticket also turns on everything that waits for the first post: the blog index and its nav link, the home's latest-post slot, the RSS feed, and the post link on the joelrdz.com project page. If the launch post moves to v1.1, this whole ticket moves with it.
 
+Ticket 03 left the key decisions on the joelrdz.com project page without their optional reference to a blog post: until the blog collection exists, `reference("blog")` accepts any value without a word. This ticket adds the field. Once the collection exists, a missing slug only logs an error and the build still exits 0, so the build has to be made to fail on it. The project page's key decisions are also brought in line with the launch post, since the spec makes the page a short English version of the post's decisions.
+
 **Blocked by:** 03, and the launch post itself, which the spec's order of work writes after building the parts.
 
 **Status:** ready-for-human
@@ -27,3 +29,5 @@ This ticket also turns on everything that waits for the first post: the blog ind
 - [ ] No wiki-style link or callout syntax is left in the published post.
 - [ ] The RSS feed validates, and its URLs point to joelrdz.com.
 - [ ] The joelrdz.com project page links to the post.
+- [ ] A key decision that references a post that doesn't exist fails the build.
+- [ ] The joelrdz.com project page's key decisions match the launch post's.

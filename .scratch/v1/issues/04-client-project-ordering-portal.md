@@ -16,3 +16,8 @@ With this second entry, the projects index and the home look complete.
 - [ ] In both palettes, the diagram's text passes 4.5:1 and the lines that carry meaning pass 3:1.
 - [ ] Every feature on the page is delivered today.
 - [ ] The status reads in progress unless the portal is delivered.
+
+## Comments
+
+- `links` is a required object in the projects schema. A project with no public links has to write `links: {}`, and the page would render an empty links paragraph with its margin. Make the field optional, or skip the paragraph when there are no links.
+- The home and the projects index each call `getCollection("projects")` with no sort, so the order is whatever the loader returns. With two projects, decide the order once, in one place.

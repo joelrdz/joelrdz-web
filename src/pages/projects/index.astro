@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import ProjectList from "@/components/ProjectList.astro";
+import Base from "@/layouts/Base.astro";
+
+const projects = await getCollection("projects");
+---
+
+<Base
+	title="Projects — Joel Rodríguez"
+	description="Projects by Joel Rodríguez, a full-stack developer: the problem each one solved, what was built and the key decisions."
+>
+	<h1>Projects</h1>
+	<p class="support">
+		What each project solved, what I built and the decisions behind it.
+	</p>
+	<ProjectList projects={projects} />
+</Base>
+
+<style>
+.support {
+	margin-bottom: 3rem;
+}
+</style>

@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { STATUS_LABELS } from "@/consts";
+
+interface Props {
+	projects: CollectionEntry<"projects">[];
+}
+
+const { projects } = Astro.props;
+---
+
+<ul>
+	{projects.map((project) => (
+		<li>
+			<a href={`/projects/${project.id}/`}>{project.data.title}</a>
+			<p>{project.data.description}</p>
+			<p class="meta">{STATUS_LABELS[project.data.status]}</p>
+		</li>
+	))}
+</ul>
+
+<style>
+ul {
+	display: grid;
+	gap: 1.5rem;
+	max-width: var(--prose-width);
+	margin: 0;
+	padding-left: 0;
+	list-style: none;
+}
+
+a {
+	font-weight: 600;
+}
+
+p {
+	margin: 0.25rem 0 0;
+}
+
+.meta {
+	font-size: 0.875rem;
+	color: var(--muted);
+}
+</style>
