@@ -148,7 +148,7 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 ### Extras
 
 - An RSS feed, through Astro's RSS package.
-- A sitemap, through Astro's sitemap integration.
+- A sitemap, through Astro's sitemap integration, linked from a `robots.txt` that allows every path: a crawler has to fetch a workers.dev page to see its noindex header.
 - One fixed Open Graph image for every page.
 - A favicon, plus an Apple touch icon for iOS.
 - Cloudflare Web Analytics, which is cookieless (no consent banner) and enabled from the Cloudflare dashboard.

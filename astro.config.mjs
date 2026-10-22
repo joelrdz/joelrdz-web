@@ -1,4 +1,5 @@
 // @ts-check
+import sitemap from "@astrojs/sitemap";
 import { defineConfig, fontProviders } from "astro/config";
 
 // https://astro.build/config
@@ -19,4 +20,5 @@ export default defineConfig({
 			fallbacks: ["monospace"],
 		},
 	],
+	integrations: [sitemap()],
 });
