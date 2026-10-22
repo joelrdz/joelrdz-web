@@ -30,3 +30,7 @@ Issues and specs live as local markdown files under `.scratch/<feature>/`. See `
 ### Domain docs
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+## Coding standards
+
+What Biome and `astro check` don't enforce is in `CODING_STANDARDS.md`. Read it before writing or reviewing code.
