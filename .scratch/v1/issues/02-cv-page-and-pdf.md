@@ -4,10 +4,14 @@
 
 **Blocked by:** 01
 
-**Status:** ready-for-human
+**Status:** done
 
-- [ ] `/cv` renders the CV inside the site shell, and the navigation links to it from every page.
-- [ ] The page links to a downloadable PDF.
-- [ ] With the site in the dark palette, the print preview of `/cv` is light.
-- [ ] The PDF says the same as the page: same sections, same dates, same email address.
-- [ ] The page and the PDF show the public placeholder address, never the private one.
+- [x] `/cv` renders the CV inside the site shell, and the navigation links to it from every page.
+- [x] The page links to a downloadable PDF.
+- [x] With the site in the dark palette, the print preview of `/cv` is light.
+- [x] The PDF says the same as the page: same sections, same dates, same email address.
+- [x] The page and the PDF show the public placeholder address, never the private one.
+
+## Comments
+
+- Pages are served with a trailing slash, so the CV lives at `/cv/` and `/cv` redirects there. The reason is in the spec's Routes section.

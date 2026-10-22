@@ -14,3 +14,7 @@ The control is a native radio group, so keyboard and screen reader support come 
 - [ ] On System, changing the macOS appearance switches the site live.
 - [ ] Light or Dark persists across pages and a new visit; choosing System clears it.
 - [ ] With storage unavailable, the page renders, the console shows no error, and the theme follows the system.
+
+## Comments
+
+- Since 02 the dark palette only applies on screen (`@media screen and (prefers-color-scheme: dark)`), so the CV prints light whatever the theme. The `:root[data-theme="dark"]` rule has to go inside `@media screen` too, or choosing Dark makes the printed CV light text on white paper.
