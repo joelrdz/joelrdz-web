@@ -8,11 +8,16 @@ The page is a short English version of the build decisions, for a reviewer who d
 
 **Blocked by:** 01
 
-**Status:** ready-for-human
+**Status:** done
 
-- [ ] `/projects` lists the project, and the navigation links to it.
-- [ ] `/projects/joelrdz-com` shows problem, what was built and the role, key decisions, stack and status, in that order.
-- [ ] The page links to the public repo and to the spec.
-- [ ] The home shows the project as proof right after the claim.
-- [ ] A project entry with no status, or a status other than in progress or delivered, fails the build.
-- [ ] The page describes only what is delivered today.
+- [x] `/projects` lists the project, and the navigation links to it.
+- [x] `/projects/joelrdz-com` shows problem, what was built and the role, key decisions, stack and status, in that order.
+- [x] The page links to the public repo and to the spec.
+- [x] The home shows the project as proof right after the claim.
+- [x] A project entry with no status, or a status other than in progress or delivered, fails the build.
+- [x] The page describes only what is delivered today.
+
+## Comments
+
+- The key decisions' optional reference to a blog post moves to 07, which explains why and carries the field.
+- The project layout is `src/pages/projects/[slug].astro` itself rather than a file in `src/layouts/`: with a single dynamic route, a separate layout would only pass the entry through.
