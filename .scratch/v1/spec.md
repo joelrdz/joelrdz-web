@@ -93,6 +93,7 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 
 - The UI, home, projects and CV are in English, and the page language is English.
 - Posts are in Spanish. Each post declares its language in its metadata. The post content, and its title and description wherever they are listed, carry that language so assistive technology switches pronunciation.
+- Copy written outside Markdown, in templates and frontmatter, uses the typographic apostrophe (’). Astro already converts the straight ones in Markdown bodies, so every page reads the same.
 
 ### Content model
 
