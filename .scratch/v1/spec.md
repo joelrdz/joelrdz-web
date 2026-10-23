@@ -206,7 +206,7 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
   - A URL that doesn't exist returns the custom 404 page with a 404 status.
   - The RSS feed and the sitemap validate, and their URLs and the canonical URLs point to joelrdz.com.
   - Post content, and Spanish titles and descriptions in listings, carry `lang="es"`.
-  - After launch: www redirects to the apex, and the test email arrives.
+  - After launch: www redirects to the apex, the test email arrives, and a shared link shows the Open Graph image and the page's description. Before launch the image can't load, because its URL points to joelrdz.com.
 - Prior art: none. The repo is a fresh scaffold.
 
 ## Out of Scope
