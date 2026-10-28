@@ -9,11 +9,10 @@ Full-stack developer with **10 years of experience** building web applications, 
 ### Independent Software Consultant — FixerJoe
 **May 2026 – Present · Saltillo, México**
 
-- Designing and building a **B2B internal ordering portal** (simplified ERP) for a multi-branch coffee company: product catalog, role-based ordering workflow, accounts receivable, purchase orders, and PDF document generation.
+- Designed and built the core of a **B2B internal ordering portal** (simplified ERP) for a multi-branch coffee company: product catalog, role-based ordering workflow and order review.
 - Stack: **Next.js 16 (App Router), TypeScript, Supabase (PostgreSQL + Row Level Security), Tailwind CSS, shadcn/ui, Vercel**.
 - Implemented role-based authentication and authorization across four user roles, enforced at the database level with RLS policies.
 - Mapped the client's real-world operations (5 interconnected spreadsheets, 5 stakeholders) into a relational data model and phased delivery plan.
-- Integrating AI-powered order suggestions (Claude API) as a second-phase feature.
 
 ### Angle — Software Agency
 **2021 – May 2026 · Remote**
