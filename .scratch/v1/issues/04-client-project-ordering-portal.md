@@ -8,7 +8,7 @@ With this second entry, the projects index and the home look complete.
 
 **Blocked by:** 03
 
-**Status:** ready-for-human
+**Status:** deferred to v1.1
 
 - [ ] `/projects` and the home list both projects.
 - [ ] The page names neither the client nor its brands, and shows no screenshots.
@@ -21,3 +21,4 @@ With this second entry, the projects index and the home look complete.
 
 - `links` is a required object in the projects schema. A project with no public links has to write `links: {}`, and the page would render an empty links paragraph with its margin. Make the field optional, or skip the paragraph when there are no links.
 - The home and the projects index each call `getCollection("projects")` with no sort, so the order is whatever the loader returns. With two projects, decide the order once, in one place.
+- Moved out of v1 (2026-10-26): the page waits for the client's go-ahead, and it won't come before launch. The spec now ships v1 with one project. The two comments above still apply when this ticket comes back.

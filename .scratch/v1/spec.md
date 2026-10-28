@@ -6,7 +6,7 @@ People who might hire the site owner as an engineer (employers, companies lookin
 
 ## Solution
 
-A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare Workers as static assets. The home page leads with what the owner solves and backs it with proof: two projects and a launch post. The CV is one click away, as a page and as a PDF. The blog, written in Spanish, works as proof of depth for the same audience. The UI is in English. Visitors can choose a light, dark or system theme. The repository is public, so it doubles as proof of how the owner plans and builds. Business (non-technical) clients are served by a separate consultancy brand and are not this site's audience.
+A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare Workers as static assets. The home page leads with what the owner solves and backs it with proof: a project, and in v1.1 a launch post. The CV is one click away, as a page and as a PDF. The blog, written in Spanish, works as proof of depth for the same audience. The UI is in English. Visitors can choose a light, dark or system theme. The repository is public, so it doubles as proof of how the owner plans and builds. Business (non-technical) clients are served by a separate consultancy brand and are not this site's audience.
 
 ## User Stories
 
@@ -24,9 +24,9 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 12. As a hiring manager, I want each project to state its status honestly (in progress or delivered), so that I know what exists today.
 13. As a hiring manager, I want project pages to describe only delivered features, so that I'm evaluating real work rather than plans.
 14. As a technical reviewer, I want the key decisions on a project page to link to the posts that explain them, so that I can go deeper where it matters.
-15. As a hiring manager, I want the client project shown anonymously but concretely (an internal ordering portal for a multi-branch coffee company), so that I understand the work without the client being exposed.
-16. As a technical reviewer, I want a diagram of the client project's data model and user roles, so that I can judge the engineering without screenshots.
-17. As a visitor using dark mode, I want the project diagram to stay legible in both palettes, so that it isn't a bright box on a dark page.
+15. ~~As a hiring manager, I want the client project shown anonymously but concretely (an internal ordering portal for a multi-branch coffee company), so that I understand the work without the client being exposed.~~ Moved to v1.1.
+16. ~~As a technical reviewer, I want a diagram of the client project's data model and user roles, so that I can judge the engineering without screenshots.~~ Moved to v1.1.
+17. ~~As a visitor using dark mode, I want the project diagram to stay legible in both palettes, so that it isn't a bright box on a dark page.~~ Moved to v1.1.
 18. As a technical reviewer, I want the site's own project page to link to its public repo, this spec and the launch post, so that I can see how the owner plans and builds.
 19. As a technical reviewer who doesn't read Spanish, I want the site's own project page to summarize the build decisions in English, so that I get the gist without reading the post.
 20. As a technical reviewer, I want a README that says what the site is, its stack and how to run it, so that I can evaluate the repo in minutes.
@@ -65,7 +65,7 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 53. As the site owner, I want invalid post or project metadata to fail the build, so that broken content never deploys.
 54. As the site owner, I want type errors to block deploys, so that the live site only ships code that type-checks.
 55. As the site owner, I want the public email address to stay a placeholder until the email provider is chosen at launch, so that I can compare options first.
-56. As the site owner, I want the design to look complete with two projects and one post, so that the launch doesn't wait for more content.
+56. As the site owner, I want the design to look complete with one project and no posts, so that the launch doesn't wait for more content.
 57. As the site owner, I want no layout slot that looks broken without a photo, so that the photo can arrive later.
 
 ## Implementation Decisions
@@ -104,15 +104,15 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 
 ### Home page
 
-- Leads with what the owner solves, followed by the proof: the two projects and the latest post. Closes with a call to get in touch (a mailto link).
+- Leads with what the owner solves, followed by the proof: the projects and the latest post. Closes with a call to get in touch (a mailto link).
 - The text is written for the site, not copied from the CV, but its claims (headline, years of experience, stack) must match the CV. The tone follows the brand criteria defined outside this repo.
-- Must look complete with two projects and one post.
+- Must look complete with one project and no posts.
 
 ### Projects at launch
 
-- **Internal ordering portal for a multi-branch coffee company** (client work): anonymous. Status "in progress" unless it is delivered by launch. No screenshots in v1; instead, a diagram of the data model and user roles, legible in both palettes. Describes only delivered features.
 - **joelrdz.com itself:** a short English version of the launch post's decisions, with links to the public repo, this spec and the post.
 - v1 doesn't wait for more projects.
+- **Internal ordering portal for a multi-branch coffee company** (client work): moved to v1.1, because it waits for the client's go-ahead. When it comes back: anonymous, status "in progress" unless it is delivered, no screenshots, a diagram of the data model and user roles legible in both palettes, and only delivered features.
 
 ### CV
 
@@ -122,10 +122,8 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 
 ### Blog at launch
 
-- One post, in Spanish: how and why this site was built. Written at the end of v1; the draft lives outside the repo and is copied in at launch.
-- The joelrdz.com project page links to it.
-- The blog index must look complete with one post.
-- If the launch post moves to v1.1, everything that depends on it waits for the first post: the blog index and its nav link, the home page's post slot, the RSS feed, and the post link on the joelrdz.com project page.
+- The launch post moved to v1.1, so v1 ships without a blog. Everything that depends on it waits for the first post: the blog index and its nav link, the home page's post slot, the RSS feed, and the post link on the joelrdz.com project page.
+- When it comes back: one post, in Spanish, on how and why this site was built. The draft lives outside the repo and is copied in at publish time, the joelrdz.com project page links to it, and the blog index must look complete with one post.
 
 ### Contact
 
@@ -195,7 +193,7 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
 - **No test framework in v1** (no Vitest, no Playwright). The only client-side logic is the theme control, and the manual checklist covers it. Revisit if more client-side JS appears.
 - **Manual acceptance checklist.** Run on the workers.dev address; the SEO and domain items run on joelrdz.com after launch.
   - Lighthouse on mobile ≥ 95: Performance, Accessibility and Best Practices on workers.dev; SEO on joelrdz.com.
-  - AA contrast in both palettes, the project diagram included.
+  - AA contrast in both palettes.
   - Keyboard: every interactive element is reachable with Tab and shows visible focus.
   - Theme control: all three options are reachable and switchable with the arrow keys, and a screen reader announces the group, the option and its selected state without custom ARIA.
   - System mode: changing the macOS appearance switches the site live, without a reload.
@@ -237,6 +235,6 @@ A static personal site at joelrdz.com, built with Astro and hosted on Cloudflare
   5. The brand's visual criteria.
   6. The UI prototype.
   7. Building the parts of this spec.
-  8. The launch post.
+  8. ~~The launch post.~~ Moved to v1.1.
   9. Launch: nameservers, the www redirect, email and the SEO audit on joelrdz.com.
 - This spec is public, like the rest of the repo: the client isn't named, and sources outside the repo aren't referenced by path.

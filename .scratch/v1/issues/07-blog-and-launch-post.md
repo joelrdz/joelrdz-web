@@ -19,7 +19,7 @@ Ticket 03 left the key decisions on the joelrdz.com project page without their o
 
 **Blocked by:** 03, and the launch post itself, which the spec's order of work writes after building the parts.
 
-**Status:** ready-for-human
+**Status:** deferred to v1.1
 
 - [ ] `/blog` lists the post, and the navigation links to it.
 - [ ] The post lives at `/blog/<slug>`, with no language prefix.
@@ -31,3 +31,7 @@ Ticket 03 left the key decisions on the joelrdz.com project page without their o
 - [ ] The joelrdz.com project page links to the post.
 - [ ] A key decision that references a post that doesn't exist fails the build.
 - [ ] The joelrdz.com project page's key decisions match the launch post's.
+
+## Comments
+
+- Moved out of v1 (2026-10-28): the launch date leaves no room to write the post, so v1 ships without a blog, as the spec plans for this case. The whole ticket moves with the post.
